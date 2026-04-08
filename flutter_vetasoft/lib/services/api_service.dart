@@ -29,7 +29,7 @@ class ApiService {
       InterceptorsWrapper(
         onRequest: (options, handler) {
           // 💡 TOKEN DE PRUEBA
-          const String myToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicm9zYTNAZ21haWwuY29tIiwicm9sZUlkIjoxLCJyb2xlTmFtZSI6IkFkbWluIGZ1bmRhY2lvbiIsImlhdCI6MTc3NTUwNjg0NSwiZXhwIjoxNzc2MTExNjQ1fQ.Ezq54jCIfmqwrV0nzuyFXR5iq9CsHNpbMsuT7dmto0A';
+          const String myToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMwLCJlbWFpbCI6InZldGVyaWFuYXJpb0BnbWFpbC5jb20iLCJyb2xlSWQiOjQsImlhdCI6MTc3NTYxODk5MiwiZXhwIjoxNzc2MjIzNzkyfQ.VMTgG8TlQf4VHoPssP7B2TXwwu4zGkbAgtx2GtfDkzQ';
           
           options.headers['Authorization'] = 'Bearer $myToken';
           

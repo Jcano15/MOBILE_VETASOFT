@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/vet_dashboard_stats.dart';
 import '../../services/vet_service.dart';
+import '../../widgets/stat_card.dart';
+import '../../widgets/action_card.dart';
+import '../../widgets/appointment_tile.dart'; // ✅ Importamos el nuevo componente
 
 class VeterinarianPanelPage extends StatelessWidget {
   VeterinarianPanelPage({super.key});
-
+  
   final VetService _vetService = VetService();
 
   @override
@@ -22,7 +25,7 @@ class VeterinarianPanelPage extends StatelessWidget {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Padding(
-                    padding: EdgeInsets.all(50.0),
+                    padding: EdgeInsets.all(100.0),
                     child: Center(child: CircularProgressIndicator()),
                   );
                 }
@@ -30,7 +33,7 @@ class VeterinarianPanelPage extends StatelessWidget {
                 if (snapshot.hasError) {
                   return const Padding(
                     padding: EdgeInsets.all(20.0),
-                    child: Text("Error al conectar con el servidor"),
+                    child: Text("Error al conectar con la clínica"),
                   );
                 }
 
@@ -43,8 +46,35 @@ class VeterinarianPanelPage extends StatelessWidget {
                       _buildWelcomeCard(stats.citasHoy),
                       const SizedBox(height: 25),
                       _buildStatsGrid(stats),
-                      const SizedBox(height: 30),
-                      const Text("Próximas citas aparecerán aquí pronto..."),
+                      const SizedBox(height: 35),
+                      _buildActionCardsSection(),
+                      const SizedBox(height: 35),
+                      
+                      // 🕒 5. SECCIÓN DE PRÓXIMAS CITAS REALES
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Próximas citas", 
+                          style: GoogleFonts.outfit(
+                            fontWeight: FontWeight.bold, 
+                            fontSize: 20, 
+                            color: Colors.black87
+                          )
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      
+                      // Si no hay citas, mostramos un mensaje bonito
+                      if (stats.proximasCitas.isEmpty)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          child: Text("No tienes citas para hoy. ¡Día tranquilo! ☕"),
+                        )
+                      else
+                        // ✅ Si hay citas, las dibujamos una por una
+                        ...stats.proximasCitas.map((cita) => AppointmentTile(appointment: cita)),
+                        
+                      const SizedBox(height: 50), // Espacio al final
                     ],
                   ),
                 );
@@ -56,6 +86,7 @@ class VeterinarianPanelPage extends StatelessWidget {
     );
   }
 
+  // --- 1. HEADER ---
   Widget _buildHeader(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -91,6 +122,7 @@ class VeterinarianPanelPage extends StatelessWidget {
     );
   }
 
+  // --- 2. BIENVENIDA ---
   Widget _buildWelcomeCard(int totalCitas) {
     return Container(
       width: double.infinity,
@@ -109,43 +141,44 @@ class VeterinarianPanelPage extends StatelessWidget {
     );
   }
 
-  Widget _buildStatsGrid(VetDashboardStats stats) {
+  // --- 3. GRID DE ESTADÍSTICAS ---
+   Widget _buildStatsGrid(VetDashboardStats stats) {
     return Column(
       children: [
         Row(
           children: [
-            _buildStatCard("${stats.citasHoy}", "Citas hoy", const Color(0xFFF7C6E6)),
+            StatCard(value: "${stats.citasHoy}", label: "Citas hoy", color: const Color(0xFFF7C6E6)),
             const SizedBox(width: 15),
-            _buildStatCard("${stats.pacientesRegistrados}", "Pacientes registrados", const Color(0xFF90B9D3)),
+            StatCard(value: "${stats.pacientesRegistrados}", label: "Pacientes registrados", color: const Color(0xFF90B9D3)),
           ],
         ),
         const SizedBox(height: 15),
         Row(
           children: [
-            _buildStatCard("${stats.solicitudesAdopcion}", "Solicitudes de adopción", const Color(0xFFB5A9E1)),
+            StatCard(value: "${stats.solicitudesAdopcion}", label: "Solicitudes de adopción", color: const Color(0xFFB5A9E1)),
             const SizedBox(width: 15),
-            _buildStatCard("\$${stats.donacionesMes}", "Donaciones/mes", const Color(0xFFD3E6CC)),
+            StatCard(value: "\$${stats.donacionesMes}", label: "Donaciones/mes", color: const Color(0xFFD3E6CC)),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildStatCard(String value, String label, Color color) {
-    return Expanded(
-      child: Container(
-        height: 100,
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(15)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(value, style: GoogleFonts.outfit(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white)),
-            Text(label, style: GoogleFonts.outfit(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w500)),
-          ],
-        ),
-      ),
+  // --- 4. SECCIÓN DE ACCIONES ---
+  Widget _buildActionCardsSection() {
+    return GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisSpacing: 15,
+      mainAxisSpacing: 15,
+      childAspectRatio: 1.1,
+      children: const [
+        ActionCard(icon: Icons.calendar_today, title: "Gestión de citas"),
+        ActionCard(icon: Icons.pets, title: "Pacientes"),
+        ActionCard(icon: Icons.favorite, title: "Donaciones"),
+        ActionCard(icon: Icons.home, title: "Adopciones"),
+      ],
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class VetAppointment {
   final int id;
   final DateTime fecha;
@@ -12,7 +14,8 @@ class VetAppointment {
     required this.duenoNombre,
     required this.motivo,
   });
-
+   String get horaFormateada => DateFormat.jm().format(fecha);
+  
   // 🧪 From JSON: Aquí es donde mapeas lo que viene de SQL/Node.js
   factory VetAppointment.fromJson(Map<String, dynamic> json) {
     return VetAppointment(
