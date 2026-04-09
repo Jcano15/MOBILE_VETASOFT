@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-// 💡 Importamos la página que construimos
-import 'package:flutter_vetasoft/ui/Pages/pacientes_view.dart';
-import 'package:flutter_vetasoft/ui/Pages/historial_medico_view.dart';
-import 'package:flutter_vetasoft/ui/Pages/ver_registro_view.dart';
-import 'package:flutter_vetasoft/ui/Pages/agregar_registro_view.dart';
+import 'ui/Pages/login_page.dart'; 
+
 void main() {
   runApp(const MyApp());
 }
@@ -14,14 +11,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'VetaSoft Branquiovet',
-      debugShowCheckedModeBanner: false, // Quitamos la banda roja de "Debug"
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6B4592)),
-        useMaterial3: true,
-      ),
-      // 🚀 ¡Aquí está el truco! Ponemos tu panel como la página inicial
-      home: const PacientesView(),
+      debugShowCheckedModeBanner: false,
+      home: const LoginPage(), // aquí sí puede ser const
     );
   }
 }
