@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vetasoft/ui/pages/adoptionview/solicitud_detalle_page.dart';
 // 💡 Importamos la página que construimos
-import 'package:flutter_vetasoft/pages/veterianrioview/veterinarian_panel_page.dart';
+import 'package:flutter_vetasoft/ui/pages/profileview/Profile_cofig_page.dart';
+import 'package:flutter_vetasoft/ui/pages/veterianrioview/veterinarian_panel_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // 🚀 ¡Aquí está el truco! Ponemos tu panel como la página inicial
-      home: VeterinarianPanelPage(),
+      home: const SolicitudDetallePage(solicitudId: 5), 
     );
   }
 }

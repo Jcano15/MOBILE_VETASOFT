@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../models/vet_dashboard_stats.dart';
-import '../../services/vet_service.dart';
-import '../../widgets/stat_card.dart';
-import '../../widgets/action_card.dart';
-import '../../widgets/appointment_tile.dart'; // ✅ Importamos el nuevo componente
+import '../../../models/vet_dashboard_stats.dart';
+import '../../../services/vet_service.dart';
+import '../../../widgets/stat_card.dart';
+import '../../../widgets/action_card.dart';
+import '../../../widgets/appointment_tile.dart'; // ✅ Importamos el nuevo componente
 
 class VeterinarianPanelPage extends StatelessWidget {
   VeterinarianPanelPage({super.key});

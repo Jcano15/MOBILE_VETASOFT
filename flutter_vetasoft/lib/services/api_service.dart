@@ -21,6 +21,9 @@ class ApiService {
     ),
   );
 
+  // 💡 CENTRALIZAMOS EL TOKEN AQUÍ PARA TODA LA APP
+  static const String currentToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMwLCJlbWFpbCI6InZldGVyaWFuYXJpb0BnbWFpbC5jb20iLCJyb2xlSWQiOjQsInJvbGVOYW1lIjoiRGlyZWN0b3IgbWVkaWNvIiwiaWF0IjoxNzc1Njg0MTc5LCJleHAiOjE3NzYyODg5Nzl9.iNVU9uSdKsZ6jbcv3GWHbAoK26iJv-7NR4iJKmp1F4s';
+
   // 2. Patrón Singleton: Una única instancia para toda la app
   static final ApiService _instance = ApiService._internal();
   factory ApiService() => _instance;
@@ -28,10 +31,8 @@ class ApiService {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
-          // 💡 TOKEN DE PRUEBA
-          const String myToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMwLCJlbWFpbCI6InZldGVyaWFuYXJpb0BnbWFpbC5jb20iLCJyb2xlSWQiOjQsImlhdCI6MTc3NTYxODk5MiwiZXhwIjoxNzc2MjIzNzkyfQ.VMTgG8TlQf4VHoPssP7B2TXwwu4zGkbAgtx2GtfDkzQ';
-          
-          options.headers['Authorization'] = 'Bearer $myToken';
+          // 🚀 Ahora el interceptor usa la variable centralizada
+          options.headers['Authorization'] = 'Bearer $currentToken';
           
           print('🚀 Petición: ${options.method} ${options.path}');
           return handler.next(options);
@@ -51,5 +52,9 @@ class ApiService {
 
   Future<Response> post(String path, {dynamic data}) async {
     return await _dio.post(path, data: data);
+  }
+
+  Future<Response> put(String path, {dynamic data}) async {
+    return await _dio.put(path, data: data);
   }
 }
