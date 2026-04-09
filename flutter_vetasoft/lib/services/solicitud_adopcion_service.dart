@@ -5,6 +5,32 @@ import '../models/solicitud_adopcion.dart';
 class SolicitudAdopcionService {
   final ApiService _api = ApiService();
 
+  // Obtener todas las solicitudes
+  Future<List<SolicitudAdopcion>> getAllSolicitudes() async {
+    try {
+      final response = await _api.get('/solicitudes-adopcion');
+      if (response.statusCode == 200 && response.data['success']) {
+        final List<dynamic> data = response.data['data'];
+        return data.map((json) => SolicitudAdopcion.fromJson(json)).toList();
+      }
+      return [];
+    } catch (e) {
+      print('❌ Error en getAllSolicitudes: $e');
+      return [];
+    }
+  }
+
+  // Crear una nueva solicitud (POST)
+  Future<bool> createSolicitud(Map<String, dynamic> data) async {
+    try {
+      final response = await _api.post('/solicitudes-adopcion', data: data);
+      return response.statusCode == 201 && response.data['success'];
+    } catch (e) {
+      print('❌ Error en createSolicitud: $e');
+      return false;
+    }
+  }
+
   // Obtener una solicitud por ID
   Future<SolicitudAdopcion?> getSolicitudById(int id) async {
     try {
