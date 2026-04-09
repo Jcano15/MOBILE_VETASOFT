@@ -1,68 +1,105 @@
 class Paciente {
-  final int pacienteId;
-  final String nombre;
+  final int animalId;
   final int clienteId;
-  final String clienteNombre;
-  final String clienteTelefono;
+  final String nombre;
   final int razaId;
-  final String razaNombre;
-  final String especieNombre;
-  final int especieId;
   final int edad;
-  final String fechaNacimiento;
-  final double peso;
+  final DateTime? fechaNacimiento;
+  final String peso;
   final String sexo;
   final String descripcion;
-  final String numeroChip;
+  final String? numeroChip;
   final String estado;
-  final String fechaIngreso;
+  final DateTime fechaIngreso;
+  final bool activo;
+  final String? foto;
+  final String clienteNombre;
+  final String clienteDocumento;
+  final String nombreRaza;
+  final String nombreEspecie;
 
   Paciente({
-    required this.pacienteId,
-    required this.nombre,
+    required this.animalId,
     required this.clienteId,
-    required this.clienteNombre,
-    required this.clienteTelefono,
+    required this.nombre,
     required this.razaId,
-    required this.razaNombre,
-    required this.especieNombre,
-    required this.especieId,
     required this.edad,
-    required this.fechaNacimiento,
+    this.fechaNacimiento,
     required this.peso,
     required this.sexo,
     required this.descripcion,
-    required this.numeroChip,
+    this.numeroChip,
     required this.estado,
     required this.fechaIngreso,
+    required this.activo,
+    this.foto,
+    required this.clienteNombre,
+    required this.clienteDocumento,
+    required this.nombreRaza,
+    required this.nombreEspecie,
   });
 
+  /// Crea una instancia de Paciente a partir de un JSON
   factory Paciente.fromJson(Map<String, dynamic> json) {
-    double _parsePeso(dynamic value) {
-      if (value == null) return 0.0;
-      if (value is num) return value.toDouble();
-      if (value is String) return double.tryParse(value.replaceAll(',', '.')) ?? 0.0;
-      return 0.0;
-    }
-
     return Paciente(
-      pacienteId: json['animal_id'] ?? json['id'] ?? 0,
-      nombre: json['nombre'] ?? 'Sin nombre',
+      animalId: json['animal_id'] ?? 0,
       clienteId: json['cliente_id'] ?? 0,
-      clienteNombre: json['cliente_nombre'] ?? 'Sin propietario',
-      clienteTelefono: json['cliente_telefono'] ?? 'N/A',
+      nombre: json['nombre'] ?? '',
       razaId: json['raza_id'] ?? 0,
-      razaNombre: json['nombre_raza'] ?? 'Sin raza',
-      especieNombre: json['nombre_especie'] ?? 'Sin especie',
-      especieId: json['especie_id'] ?? 0,
       edad: json['edad'] ?? 0,
-      fechaNacimiento: json['fecha_nacimiento'] ?? '',
-      peso: _parsePeso(json['peso']),
+      fechaNacimiento: json['fecha_nacimiento'] != null
+          ? DateTime.parse(json['fecha_nacimiento'])
+          : null,
+      peso: json['peso']?.toString() ?? '0',
       sexo: json['sexo'] ?? '',
       descripcion: json['descripcion'] ?? '',
-      numeroChip: json['numero_chip'] ?? '',
-      estado: json['estado'] ?? 'Activo',
-      fechaIngreso: json['fecha_ingreso'] ?? json['created_at'] ?? '',
+      numeroChip: json['numero_chip'],
+      estado: json['estado'] ?? '',
+      fechaIngreso: json['fecha_ingreso'] != null
+          ? DateTime.parse(json['fecha_ingreso'])
+          : DateTime.now(),
+      activo: json['activo'] ?? true,
+      foto: json['foto'],
+      clienteNombre: json['cliente_nombre'] ?? '',
+      clienteDocumento: json['cliente_documento'] ?? '',
+      nombreRaza: json['nombre_raza'] ?? '',
+      nombreEspecie: json['nombre_especie'] ?? '',
     );
   }
+
+  /// Convierte la instancia a JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'animal_id': animalId,
+      'cliente_id': clienteId,
+      'nombre': nombre,
+      'raza_id': razaId,
+      'edad': edad,
+      'fecha_nacimiento': fechaNacimiento?.toIso8601String(),
+      'peso': peso,
+      'sexo': sexo,
+      'descripcion': descripcion,
+      'numero_chip': numeroChip,
+      'estado': estado,
+      'fecha_ingreso': fechaIngreso.toIso8601String(),
+      'activo': activo,
+      'foto': foto,
+      'cliente_nombre': clienteNombre,
+      'cliente_documento': clienteDocumento,
+      'nombre_raza': nombreRaza,
+      'nombre_especie': nombreEspecie,
+    };
+  }
+
+  /// Retorna las iniciales del nombre para el avatar
+  String get iniciales {
+    final nombres = nombre.split(' ');
+    if (nombres.length >= 2) {
+      return (nombres[0][0] + nombres[1][0]).toUpperCase();
+    }
+    return nombre.isNotEmpty ? nombre[0].toUpperCase() : '?';
+  }
+
+  /// Retorna la información resumida del animal
+  String get infoResumida => '$nombreRaza · $edad años · $sexo';
 }

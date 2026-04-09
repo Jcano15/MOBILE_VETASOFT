@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'ui/views/pacientes_view.dart';
-
-import 'utils/app_routes_pacientes.dart';
-import 'widgets/empty_view_pacientes.dart';
-
-import 'ui/views/historial_medico_view.dart';
-import 'utils/app_routes_historial_medico.dart';
-
+// 💡 Importamos la página que construimos
+import 'package:flutter_vetasoft/ui/Pages/pacientes_view.dart';
+import 'package:flutter_vetasoft/ui/Pages/historial_medico_view.dart';
+import 'package:flutter_vetasoft/ui/Pages/ver_registro_view.dart';
+import 'package:flutter_vetasoft/ui/Pages/agregar_registro_view.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -17,32 +14,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter VetaSoft',
-      debugShowCheckedModeBanner: false,
-
+      title: 'VetaSoft Branquiovet',
+      debugShowCheckedModeBanner: false, // Quitamos la banda roja de "Debug"
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF2a7dd7),
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6B4592)),
         useMaterial3: true,
       ),
-
+      // 🚀 ¡Aquí está el truco! Ponemos tu panel como la página inicial
       home: const PacientesView(),
-
-      routes: {
-        AppRoutesPacientes.detallePaciente: (context) =>
-            const EmptyViewPacientes(
-              titulo: 'Detalle Paciente',
-            ),
-
-        AppRoutesPacientes.registrarMascota: (context) =>
-            const EmptyViewPacientes(
-              titulo: 'Registrar Mascota',
-            ),
-
-        AppRoutesHistorialMedico.historial: (context) =>
-            const HistorialMedicoView(),
-      },
     );
   }
 }
