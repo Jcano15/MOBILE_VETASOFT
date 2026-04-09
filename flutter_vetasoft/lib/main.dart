@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'ui/register_client_view.dart';
 import 'ui/pets_view.dart';
+import 'package:flutter_vetasoft/ui/add_animal_view.dart';
+import 'package:flutter_vetasoft/ui/donations_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // vista clientes por ahora
-      home: const RegisterClientView(),
+      home: DonationsView(),
     );
   }
 }

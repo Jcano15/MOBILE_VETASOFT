@@ -104,6 +104,21 @@ class ApiService {
         .toList();
   }
 
+  // ─── Crear donación ────────────────────────────────────────────────────────
+  /// POST /api/donaciones
+  static Future<Map<String, dynamic>> createDonacion(
+    Map<String, dynamic> body,
+  ) async {
+    final uri = Uri.parse('$baseUrl/donaciones');
+    final response = await http.post(
+      uri,
+      headers: _headers,
+      body: jsonEncode(body),
+    );
+
+    return _parseResponse(response, 'crear donación');
+  }
+
   // ─── Helper de respuesta ───────────────────────────────────────────────────
   static Map<String, dynamic> _parseResponse(
     http.Response response,

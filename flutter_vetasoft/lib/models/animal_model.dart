@@ -8,6 +8,8 @@ class AnimalModel {
   final String sexo;
   final String? descripcion;
   final String? numeroChip;
+  final String? estado;
+  final String? foto;
 
   const AnimalModel({
     required this.clienteId,
@@ -19,6 +21,8 @@ class AnimalModel {
     required this.sexo,
     this.descripcion,
     this.numeroChip,
+    this.estado,
+    this.foto,
   });
 
   Map<String, dynamic> toJson() {
@@ -35,6 +39,8 @@ class AnimalModel {
         'descripcion': descripcion,
       if (numeroChip != null && numeroChip!.isNotEmpty)
         'numero_chip': numeroChip,
+      if (estado != null && estado!.isNotEmpty) 'estado': estado,
+      if (foto != null && foto!.isNotEmpty) 'foto': foto,
     };
   }
 }
